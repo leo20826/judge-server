@@ -2,9 +2,11 @@ FROM vnoj/runtimes-tier1
 
 ARG TAG=master
 
-RUN apt-get update && \
-	apt-get install -y --no-install-recommends unzip && \
-	rm -rf /var/lib/apt/lists/*
+# Parche de seguridad SHA-1
+RUN rm -f /etc/apt/sources.list.d/*.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends unzip ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install scratch interpreter
 RUN ARCH=$([ $(uname -m) = "x86_64" ] && echo "amd64" || echo "arm64") && \
